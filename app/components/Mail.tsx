@@ -1,3 +1,4 @@
+"use client"
 import {
   faAngleLeft,
   faAngleRight,
@@ -89,10 +90,10 @@ export default function Mail() {
         <div className="h-96 overflow-scroll shadow-xl">
           {Object.keys(jsonData as any)
             .reverse()
-            .map((item: string, index: number) => (
+            .map((item: any, index: number) => (
               <>
                 {
-                  (search === "" || jsonData[item]["name_th"].includes(search) || jsonData[item]["position"][0].includes(search)) && (
+                  (search === "" || (jsonData[item]["name_th"] as string).includes(search) || (jsonData[item]["position"][0] as string).includes(search)) && (
                     <>
                       <div className="w-full bg-white grid grid-cols-10 p-5 text-xs shadow-xl border-b-2 border-gray-100">
                   <div className="col-span-1">

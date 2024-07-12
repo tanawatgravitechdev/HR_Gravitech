@@ -1,3 +1,4 @@
+"use client";
 import { initializeApp } from "firebase/app";
 import { child, get, getDatabase, ref, update, remove } from "firebase/database";
 import {
@@ -41,14 +42,10 @@ async function readFile(path: string) {
   return getMetadata(rf(storage, path));
 }
 
-async function removeKey(path: string) {
-  return remove(ref(path))
-}
 
 export default {
   write: writeData,
   get: getData,
   upload: uploadFile,
   download: readFile,
-  remove: removeKey
 };

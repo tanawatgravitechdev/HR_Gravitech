@@ -6,9 +6,9 @@ import {
   faMailBulk,
   faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
-import Mail from "../mail/page";
+import Mail from "../components/Mail";
 import ListItemComponent from "../components/ListItemComponent";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Registed from "../components/Registed";
 import Edit from "../components/Edit";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,10 +16,15 @@ import { useDispatch, useSelector } from "react-redux";
 export default function Main() {
   const [numActive, setNumAtive] = useState(2);
   const [addEmployee, employee] = useState(false);
+  const [stateNewEmployee, setStateNewEmployee] = useState("")
 
 
   const stateStore = useSelector((state: any)=> state.storage)
   const dispatch = useDispatch()
+
+  useEffect(()=>{
+    setStateNewEmployee(stateStore.stateNewEmployee)
+  },[stateStore.stateNewEmployee])
   
 
   return (
@@ -58,8 +63,8 @@ export default function Main() {
           </div>
           <div className="col-span-10 h-dvh pt-20">
             {numActive === 1 && <Mail />}
-            {(numActive === 2 && stateStore.stateNewEmployee === "0") && <Registed />}
-            {(numActive === 2 && stateStore.stateNewEmployee === "1") && <Edit />}
+            {(numActive === 2 && stateNewEmployee === "0") && <Registed />}
+            {(numActive === 2 && stateNewEmployee === "1") && <Edit />}
           </div>
         </div>
       </div>
