@@ -42,9 +42,9 @@ export default function Registed() {
         password:
           jsonTmp.full_name_en.split(" ").length > 1
             ? (
-                jsonTmp.full_name_en.split(" ")[0] +
+                jsonTmp.full_name_en.replaceAll('  ',' ').split(" ")[0] +
                 "_" +
-                jsonTmp.full_name_en.split(" ")[1].substring(0, 1)
+                jsonTmp.full_name_en.replaceAll('  ',' ').split(" ")[1].replaceAll(' ','').substring(0, 1)
               ).toLowerCase()
             : "password",
       };
@@ -116,10 +116,10 @@ export default function Registed() {
               <span className="text-xs font-bold">ลำดับ</span>
             </div>
             <div className="col-span-2 text-center pt-3">
-              <span className="text-xs font-bold">ชื่อ</span>
+              <span className="text-xs font-bold">ชื่อ-นามสกุล (ภาษาไทย)</span>
             </div>
             <div className="col-span-2 text-center pt-3">
-              <span className="text-xs font-bold">นามสกุล</span>
+              <span className="text-xs font-bold">ชื่อ-นามสกุล (ภาษาอังกฤษ)</span>
             </div>
             <div className="col-span-1 text-center pt-3">
               <span className="text-xs font-bold">รหัสพนักงาน</span>
@@ -145,14 +145,12 @@ export default function Registed() {
                         </div>
                         <div className="col-span-2 text-left pt-3">
                           <span className="text-xs">
-                            {data.full_name_th.split(" ")[0]}
+                            {data.full_name_th}
                           </span>
                         </div>
                         <div className="col-span-2 text-left pt-3">
                           <span className="text-xs">
-                            {data.full_name_th.split(" ").length > 1
-                              ? data.full_name_th.split(" ")[1]
-                              : "N/A"}
+                            {data.full_name_en}
                           </span>
                         </div>
                         <div className="col-span-1 text-center pt-3">

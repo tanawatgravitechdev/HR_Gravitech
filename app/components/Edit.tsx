@@ -44,7 +44,7 @@ export default function Edit() {
       full_name_th: fullNameTH,
       department: department,
       date_create: new Date().toISOString(),
-      password: fullNameEN.split(' ').length > 1 ? (fullNameEN.split(' ')[0] + "_" + fullNameEN.split(' ')[1].substring(0,1)).toLowerCase() : 'password'
+      password: fullNameEN.split(' ').length > 1 ? (fullNameEN.replaceAll('  ',' ').split(' ')[0] + "_" + fullNameEN.replaceAll('  ',' ').split(' ')[1].substring(0,1)).toLowerCase() : 'password'
     };
     db.write(jsonTemp);
   }
@@ -176,22 +176,23 @@ export default function Edit() {
 
                       clearDataToFirebase(primaryKey);
                     }
-                    setSwalProps({
-                      show: true,
-                      title: "แจ้งเตือน",
-                      icon: "success",
-                      text: "แก้ไขสำเร็จ",
-                    });
+                    // setSwalProps({
+                    //   show: true,
+                    //   title: "แจ้งเตือน",
+                    //   icon: "success",
+                    //   text: "แก้ไขสำเร็จ",
+                    // });
                     writeDataToFirebase();
                   }else{
-                    setSwalProps({
-                      show: true,
-                      title: "แจ้งเตือน",
-                      icon: "success",
-                      text: "บันทึกสำเร็จ",
-                    });
+                    // setSwalProps({
+                    //   show: true,
+                    //   title: "แจ้งเตือน",
+                    //   icon: "success",
+                    //   text: "บันทึกสำเร็จ",
+                    // });
                     writeNewDataToFirebase();
                   }
+                  dispatch({ type: "setStateNewEmployee", payload: "0" });
                 }
               }}
             >
