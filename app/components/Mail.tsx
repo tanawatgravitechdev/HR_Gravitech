@@ -17,7 +17,7 @@ export default function Mail() {
   const [jsonData, setJsonData] = useState([]);
   const [search, setSearch] = useState("");
 
-  function compareDateTimes(a, b) {
+  function compareDateTimes(a: any, b: any) {
     // แปลงวันที่จากรูปแบบ DD/MM/YYYY เป็นวัตถุ Date
     const partsA = a.date_stamp.split('/');
     const partsB = b.date_stamp.split('/');
