@@ -26,7 +26,7 @@ export default function Mail() {
     const dateB = new Date(partsB[2], partsB[1] - 1, partsB[0]);
   
     // เปรียบเทียบวันที่
-    return dateB - dateA;
+    return (dateB as any) - (dateA as any);
   }
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function Mail() {
         jsonTmp[key]['key'] = key;
       })
       
-      setJsonData(Object.values(jsonTmp).sort(compareDateTimes));
+      setJsonData((Object.values(jsonTmp).sort(compareDateTimes) as any));
     });
   }, []);
 
