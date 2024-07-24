@@ -12,6 +12,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <title>HR Gravitech</title>
       <body className={"max-h-full"}>
         <Provider store={store}>
           <main className="h-max">{children}</main>
