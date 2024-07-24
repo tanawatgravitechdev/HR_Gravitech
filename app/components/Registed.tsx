@@ -103,7 +103,7 @@ export default function Registed() {
               dispatch({ type: "setEditEmployee", payload: "" });
               dispatch({ type: "setStateNewEmployee", payload: "1" });
             }}
-            className=" cursor-pointer leading-10 text-white rounded-lg  text-xs text-center h-10 bg-main-text-color"
+            className="hover:bg-green-500 cursor-pointer leading-10 text-white rounded-lg  text-xs text-center h-10 bg-main-text-color"
           >
             <FontAwesomeIcon icon={faPlus} className="mr-3 " />
             <span>เพิ่มพนักงานใหม่</span>
