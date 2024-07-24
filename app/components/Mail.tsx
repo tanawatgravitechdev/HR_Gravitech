@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   faAngleLeft,
   faAngleRight,
@@ -19,25 +19,27 @@ export default function Mail() {
 
   function compareDateTimes(a: any, b: any) {
     // แปลงวันที่จากรูปแบบ DD/MM/YYYY เป็นวัตถุ Date
-    const partsA = a.date_stamp.split('/');
-    const partsB = b.date_stamp.split('/');
-  
+    const partsA = a.date_stamp.split("/");
+    const partsB = b.date_stamp.split("/");
+
     const dateA = new Date(partsA[2], partsA[1] - 1, partsA[0]);
     const dateB = new Date(partsB[2], partsB[1] - 1, partsB[0]);
-  
+
     // เปรียบเทียบวันที่
     return (dateB as any) - (dateA as any);
   }
 
   useEffect(() => {
-    db.get(`registed`).then((snapshot) => {
-      let jsonTmp = {...snapshot.val()}
-      Object.keys(snapshot.val()).forEach((key)=>{
-        jsonTmp[key]['key'] = key;
-      })
-      
-      setJsonData((Object.values(jsonTmp).sort(compareDateTimes) as any));
-    });
+    setTimeout(() => {
+      db.get(`registed`).then((snapshot) => {
+        let jsonTmp = { ...snapshot.val() };
+        Object.keys(snapshot.val()).forEach((key) => {
+          jsonTmp[key]["key"] = key;
+        });
+
+        setJsonData(Object.values(jsonTmp).sort(compareDateTimes) as any);
+      });
+    }, 1000);
   }, []);
 
   useEffect(() => {
@@ -70,8 +72,8 @@ export default function Mail() {
                 className="leading-10 w-full relative pl-10 outline-none font-light text-sm"
                 placeholder="Search"
                 value={search}
-                onChange={(e)=>{
-                  setSearch(e.target.value)
+                onChange={(e) => {
+                  setSearch(e.target.value);
                 }}
               />
             </div>
@@ -105,61 +107,52 @@ export default function Mail() {
           </div>
         </div>
         <div className="h-96 overflow-scroll shadow-xl">
-          {jsonData
-            .map((item: any, index: number) => (
-              <>
-                {
-                  (search === "" || (item["name_th"] as string).includes(search) || (item["position"][0] as string).includes(search)) && (
-                    <>
-                      <div className="w-full bg-white grid grid-cols-10 p-5 text-xs shadow-xl border-b-2 border-gray-100">
-                  <div className="col-span-1">
-                    <FontAwesomeIcon
-                      icon={faStar}
-                      className="w-4 ml-3 text-gray-200"
-                    />
-                  </div>
-                  <div className="col-span-2">
-                    <p>
-                      {item["name_th"]
-                        ? item["name_th"]
-                        : "N/A"}
-                    </p>
-                    <p>
-                      {item["email"]
-                        ? item["email"]
-                        : "N/A"}
-                    </p>
-                  </div>
-                  <div className="col-span-5">
-                    <p className="mb-2 font-light">📣 ได้สมัครงานในตำแหน่ง {item["position"][0]}</p>
-                    <div className="grid grid-cols-2 w-60 gap-5">
-                      <a
-                        href={`https://register-gravitech-hr.vercel.app/reviewer/${item['key']}`}
-                        target="blank"
-                        className="border-red-400 bg-white border-2 rounded-md text-xs text-center leading-8"
-                      >
-                        🔸Super resume
-                      </a>
-                      <a
-                        href={`https://register-gravitech-hr.vercel.app/reviewer_iso/${item['key']}`}
-                        target="blank"
-                        className="border-green-400 bg-white border-2 rounded-md text-xs text-center leading-8"
-                      >
-                        🔹Job form
-                      </a>
+          {jsonData.map((item: any, index: number) => (
+            <>
+              {(search === "" ||
+                (item["name_th"] as string).includes(search) ||
+                (item["position"][0] as string).includes(search)) && (
+                <>
+                  <div className="w-full bg-white grid grid-cols-10 p-5 text-xs shadow-xl border-b-2 border-gray-100">
+                    <div className="col-span-1">
+                      <FontAwesomeIcon
+                        icon={faStar}
+                        className="w-4 ml-3 text-gray-200"
+                      />
+                    </div>
+                    <div className="col-span-2">
+                      <p>{item["name_th"] ? item["name_th"] : "N/A"}</p>
+                      <p>{item["email"] ? item["email"] : "N/A"}</p>
+                    </div>
+                    <div className="col-span-5">
+                      <p className="mb-2 font-light">
+                        📣 ได้สมัครงานในตำแหน่ง {item["position"][0]}
+                      </p>
+                      <div className="grid grid-cols-2 w-60 gap-5">
+                        <a
+                          href={`https://register-gravitech-hr.vercel.app/reviewer/${item["key"]}`}
+                          target="blank"
+                          className="border-red-400 bg-white border-2 rounded-md text-xs text-center leading-8"
+                        >
+                          🔸Super resume
+                        </a>
+                        <a
+                          href={`https://register-gravitech-hr.vercel.app/reviewer_iso/${item["key"]}`}
+                          target="blank"
+                          className="border-green-400 bg-white border-2 rounded-md text-xs text-center leading-8"
+                        >
+                          🔹Job form
+                        </a>
+                      </div>
+                    </div>
+                    <div className="col-span-2">
+                      {item["date_stamp"] ? item["date_stamp"] : "N/A"}
                     </div>
                   </div>
-                  <div className="col-span-2">
-                    {item["date_stamp"]
-                      ? item["date_stamp"]
-                      : "N/A"}
-                  </div>
-                </div>
-                    </>
-                  )
-                }
-              </>
-            ))}
+                </>
+              )}
+            </>
+          ))}
         </div>
       </div>
     </>
