@@ -115,11 +115,12 @@ export default function Registed() {
             <div className="text-center pt-3">
               <span className="text-xs font-bold">ลำดับ</span>
             </div>
-            <div className="col-span-2 text-center pt-3">
+            <div className="col-span-3 text-left pt-3 grid grid-cols-2">
               <span className="text-xs font-bold">ชื่อ-นามสกุล (ภาษาไทย)</span>
-            </div>
-            <div className="col-span-2 text-center pt-3">
               <span className="text-xs font-bold">ชื่อ-นามสกุล (ภาษาอังกฤษ)</span>
+            </div>
+            <div className="col-span-1 text-center pt-3">
+              <span className="text-xs font-bold">รหัสเครื่อง</span>
             </div>
             <div className="col-span-1 text-center pt-3">
               <span className="text-xs font-bold">รหัสพนักงาน</span>
@@ -143,14 +144,17 @@ export default function Registed() {
                         <div className="text-center pt-3">
                           <span className="text-xs">{index + 1}</span>
                         </div>
-                        <div className="col-span-2 text-left pt-3">
+                        <div className="col-span-3 text-left pt-3 grid grid-cols-2">
                           <span className="text-xs">
                             {data.full_name_th}
                           </span>
-                        </div>
-                        <div className="col-span-2 text-left pt-3">
                           <span className="text-xs">
                             {data.full_name_en}
+                          </span>
+                        </div>
+                        <div className="col-span-1 text-center pt-3">
+                          <span className="text-xs">
+                            {data.id ? data.id : 'ยังไม่ได้ระบุ'}
                           </span>
                         </div>
                         <div className="col-span-1 text-center pt-3">
