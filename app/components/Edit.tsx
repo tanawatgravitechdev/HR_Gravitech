@@ -15,6 +15,7 @@ export default function Edit() {
   const [fullNameTH, setFullNameTH] = useState("");
   const [department, setDepartment] = useState("");
   const [primaryKey, setPrimaryKey] = useState("");
+  const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [dateCreate, setDateCreate] = useState("");
 
@@ -27,6 +28,7 @@ export default function Edit() {
       employee_number: employeeNumber,
       full_name_en: fullNameEN,
       full_name_th: fullNameTH,
+      id: id,
       department: department,
       date_update: new Date().toISOString(),
       date_create: dateCreate,
@@ -42,9 +44,17 @@ export default function Edit() {
       employee_number: employeeNumber,
       full_name_en: fullNameEN,
       full_name_th: fullNameTH,
+      id: id,
       department: department,
       date_create: new Date().toISOString(),
-      password: fullNameEN.split(' ').length > 1 ? (fullNameEN.replaceAll('  ',' ').split(' ')[0] + "_" + fullNameEN.replaceAll('  ',' ').split(' ')[1].substring(0,1)).toLowerCase() : 'password'
+      password:
+        fullNameEN.split(" ").length > 1
+          ? (
+              fullNameEN.replaceAll("  ", " ").split(" ")[0] +
+              "_" +
+              fullNameEN.replaceAll("  ", " ").split(" ")[1].substring(0, 1)
+            ).toLowerCase()
+          : "password",
     };
     db.write(jsonTemp);
   }
@@ -66,7 +76,8 @@ export default function Edit() {
         setFullNameTH(json.full_name_th);
         setDepartment(json.department);
         setPassword(json.password);
-        setDateCreate(json.date_create)
+        setDateCreate(json.date_create);
+        setId(json.id);
       });
     }
   }, [stateStore.editEmployee]);
@@ -131,16 +142,28 @@ export default function Edit() {
             </div>
             <div className="grid grid-cols-4 gap-5 mt-5 mb-16">
               <span className="leading-10 text-right text-xs">แผนก</span>
-              <div className="col-span-3 grid grid-cols-3">
+              <div className="col-span-3 grid grid-cols-4 grid grid-cols-2">
                 <input
                   type="text"
                   placeholder="แผนก"
-                  className="text-xs rounded w-full border-gray-300 border-2 p-2"
+                  className="text-xs rounded w-full border-gray-300 border-2 p-2 col-span-2"
                   value={department}
                   onChange={(e) => {
                     setDepartment(e.target.value);
                   }}
                 />
+                <div className="w-full grid grid-cols-5 gap-5 col-span-2">
+                  <span className="leading-10 text-right text-xs col-span-2">*รหัสเครื่องสแกน</span>
+                  <input
+                    type="text"
+                    placeholder="รหัสเครื่องสแกน"
+                    className="text-xs rounded w-full border-gray-300 border-2 p-2 col-span-3"
+                    value={id}
+                    onChange={(e) => {
+                      setId(e.target.value);
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -172,8 +195,7 @@ export default function Edit() {
                   });
                 } else {
                   if (primaryKey != "") {
-                    if(primaryKey != employeeNumber){
-
+                    if (primaryKey != employeeNumber) {
                       clearDataToFirebase(primaryKey);
                     }
                     // setSwalProps({
@@ -183,7 +205,7 @@ export default function Edit() {
                     //   text: "แก้ไขสำเร็จ",
                     // });
                     writeDataToFirebase();
-                  }else{
+                  } else {
                     // setSwalProps({
                     //   show: true,
                     //   title: "แจ้งเตือน",
