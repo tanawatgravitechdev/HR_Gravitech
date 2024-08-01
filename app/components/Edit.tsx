@@ -96,7 +96,7 @@ export default function Edit() {
               <span className="leading-10 text-right text-xs">
                 *กรุณากรอกรหัสเข้าสู่ระบบ
               </span>
-              <div className="col-span-2">
+              <div className="col-span-3">
                 <input
                   type="text"
                   placeholder="รหัสที่สร้างจากเครื่องสแกนหน้า"
