@@ -13,6 +13,7 @@ import Registed from "../components/Registed";
 import Edit from "../components/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 export default function Main() {
   const [numActive, setNumAtive] = useState(2);
   const [addEmployee, employee] = useState(false);
@@ -20,10 +21,23 @@ export default function Main() {
 
   const stateStore = useSelector((state: any) => state.storage);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     setStateNewEmployee(stateStore.stateNewEmployee);
   }, [stateStore.stateNewEmployee]);
+
+  useEffect(() => {
+    if (stateStore.login === "") {
+      router.push("/");
+    }
+  }, [stateStore.login]);
+
+  useEffect(() => {
+    if (stateStore.login === "") {
+      router.push("/");
+    }
+  }, []);
 
   return (
     <>

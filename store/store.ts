@@ -4,6 +4,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit"
 const initialState = {
     stateNewEmployee: "0",
     editEmployee: "",
+    login: "",
 }
 
 const sampleReducer = (state = initialState, action: any) => {
@@ -17,6 +18,11 @@ const sampleReducer = (state = initialState, action: any) => {
             return {
                 ...state,
                 editEmployee: action.payload
+            }
+        case "setLogin":
+            return {
+                ...state,
+                login: action.payload
             }
         default:
             return state;

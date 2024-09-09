@@ -39,7 +39,7 @@ export default function Mail() {
 
         setJsonData(Object.values(jsonTmp).sort(compareDateTimes) as any);
       });
-    }, 1000);
+    }, 0);
   }, []);
 
   useEffect(() => {
