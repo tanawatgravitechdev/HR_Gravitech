@@ -31,8 +31,7 @@ export default function Home() {
   function login() {
     if (![username, password].includes("")) {
       db.get("member/" + username).then((snapshot) => {
-        console.log("member/" + username, snapshot.val())
-        if (snapshot.val()["password"] == password) {
+        if (snapshot.val()["password"] == password && (snapshot.val()["employee_number"].includes("GL006") || snapshot.val()["department"].includes("บุคคลและธุรการ"))) {
           dispatch({
             type: "setLogin",
             payload: snapshot.val()["full_name_en"],
