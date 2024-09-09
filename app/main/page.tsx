@@ -25,6 +25,10 @@ export default function Main() {
     setStateNewEmployee(stateStore.stateNewEmployee);
   }, [stateStore.stateNewEmployee]);
 
+  useEffect(()=>{
+
+  }, 1000)
+
   return (
     <>
       <motion.div
