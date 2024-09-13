@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import db from "@/firebase/index";
 import SweetAlert2 from "react-sweetalert2";
 import { useEffect, useState } from "react";
-
+import sha256 from "@/encode";
 export default function Edit() {
   const stateStore = useSelector((state: any) => state.storage);
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ export default function Edit() {
     db.write(jsonTemp);
   }
 
-  function writeNewDataToFirebase() {
+  async function writeNewDataToFirebase() {
     let jsonTemp: any = {};
     let key: string = employeeNumber;
     jsonTemp[key] = {
@@ -47,14 +47,15 @@ export default function Edit() {
       id: id,
       department: department,
       date_create: new Date().toISOString(),
-      password:
+      password: await sha256(
         fullNameEN.split(" ").length > 1
           ? (
               fullNameEN.replaceAll("  ", " ").split(" ")[0] +
               "_" +
               fullNameEN.replaceAll("  ", " ").split(" ")[1].substring(0, 1)
             ).toLowerCase()
-          : "password",
+          : "password"
+      ),
     };
     db.write(jsonTemp);
   }
@@ -153,7 +154,9 @@ export default function Edit() {
                   }}
                 />
                 <div className="w-full grid grid-cols-5 gap-5 col-span-2">
-                  <span className="leading-10 text-right text-xs col-span-2">*รหัสเครื่องสแกน</span>
+                  <span className="leading-10 text-right text-xs col-span-2">
+                    *รหัสเครื่องสแกน
+                  </span>
                   <input
                     type="text"
                     placeholder="รหัสเครื่องสแกน"

@@ -3,7 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Nav from "../components/nav";
 import {
   faEnvelope,
+  faFolderOpen,
   faMailBulk,
+  faSignOut,
   faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import Mail from "../components/Mail";
@@ -28,93 +30,150 @@ export default function Main() {
   }, [stateStore.stateNewEmployee]);
 
   useEffect(() => {
-    if (stateStore.login === "") {
+    if (stateStore.login == "") {
       router.push("/");
     }
   }, [stateStore.login]);
 
   useEffect(() => {
-    if (stateStore.login === "") {
+    if (stateStore.login == "") {
+      dispatch({
+        type: "setLogin",
+        payload: "",
+      });
       router.push("/");
     }
   }, []);
 
   return (
     <>
-      <motion.div
-        className="z-50 absolute left-0 w-full"
-        initial={{ opacity: 1, y: -60 }}
-        animate={{ opacity: 1, y: -8 }}
-      >
-        <Nav />
-      </motion.div>
-      <div className="w-full block h-max font-fontFamily">
-        <div className="grid grid-cols-12 h-full scroll">
-          <div className="col-span-2 w-full relative block ">
-            <motion.div
-              initial={{ opacity: 0.5, left: -400 }}
-              animate={{ opacity: 1, left: -10 }}
-              className="max-h-dvh h-dvh w-full absolute bg-main-color z-20 pt-16"
-            >
-              <div className="mt-5 pl-5 w-full">
-                <span className="text-main-text-color font-bold pl-5 pt-10">
-                  เมนูจัดการ
-                </span>
+      {stateStore.login != "" && (
+        <>
+          <motion.div
+            className="z-50 absolute left-0 w-full"
+            initial={{ opacity: 1, y: -60 }}
+            animate={{ opacity: 1, y: -8 }}
+          >
+            <Nav />
+          </motion.div>
+
+          <div className="w-full block h-max font-fontFamily">
+            <div className="grid grid-cols-12 h-full scroll">
+              <div className="col-span-2 w-full relative block ">
+                <motion.div
+                  initial={{ opacity: 0.5, left: -400 }}
+                  animate={{ opacity: 1, left: -10 }}
+                  className="max-h-dvh h-dvh w-full absolute bg-main-color z-20 pt-16"
+                >
+                  <div className="mt-5 pl-5 w-full">
+                    <span className="text-main-text-color font-bold pl-5 pt-10">
+                      เมนูจัดการ
+                    </span>
+                  </div>
+                  <div
+                    onClick={() => {
+                      setNumAtive(1);
+                    }}
+                    className="hover:bg-stone-800"
+                  >
+                    <ListItemComponent
+                      name="กล่องข้อความ"
+                      icon={faEnvelope}
+                      active={numActive === 1}
+                    />
+                  </div>
+                  <div
+                    onClick={() => {
+                      setNumAtive(2);
+                    }}
+                    className="hover:bg-stone-800"
+                  >
+                    <ListItemComponent
+                      name="รายชื่อพนักงาน"
+                      icon={faUserGroup}
+                      active={numActive === 2}
+                    />
+                  </div>
+                  <div
+                    onClick={() => {
+                      setNumAtive(3);
+                    }}
+                    className="hover:bg-stone-800"
+                  >
+                    <ListItemComponent
+                      name="ผลทดสอบ"
+                      icon={faFolderOpen}
+                      active={numActive === 3}
+                    />
+                  </div>
+                  <div
+                    onClick={() => {
+                      setNumAtive(4);
+                    }}
+                    className="hover:bg-stone-800"
+                  >
+                    <ListItemComponent
+                      name="ใบคำลา"
+                      icon={faFolderOpen}
+                      active={numActive === 4}
+                    />
+                  </div>
+                  <div
+                    onClick={() => {
+                      setNumAtive(5);
+                    }}
+                    className="hover:bg-stone-800"
+                  >
+                    <ListItemComponent
+                      name="ประกาศ"
+                      icon={faFolderOpen}
+                      active={numActive === 5}
+                    />
+                  </div>
+                  <div
+                    onClick={() => {
+                      router.push("/");
+                    }}
+                    className="hover:bg-stone-800"
+                  >
+                    <ListItemComponent
+                      name="ออกจากระบบ"
+                      icon={faSignOut}
+                      active={numActive === 9}
+                    />
+                  </div>
+                </motion.div>
               </div>
-              <div
-                onClick={() => {
-                  setNumAtive(1);
-                }}
-                className="hover:bg-stone-800"
-              >
-                <ListItemComponent
-                  name="กล่องข้อความ"
-                  icon={faEnvelope}
-                  active={numActive === 1}
-                />
+              <div className="col-span-10 h-dvh pt-20">
+                {numActive === 1 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 100 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    <Mail />
+                  </motion.div>
+                )}
+                {numActive === 2 && stateNewEmployee === "0" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 100 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    <Registed />
+                  </motion.div>
+                )}
+                {numActive === 2 && stateNewEmployee === "1" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 100 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    <Edit />
+                  </motion.div>
+                )}
               </div>
-              <div
-                onClick={() => {
-                  setNumAtive(2);
-                }}
-                className="hover:bg-stone-800"
-              >
-                <ListItemComponent
-                  name="รายชื่อพนักงาน"
-                  icon={faUserGroup}
-                  active={numActive === 2}
-                />
-              </div>
-            </motion.div>
+            </div>
           </div>
-          <div className="col-span-10 h-dvh pt-20">
-            {numActive === 1 && (
-              <motion.div
-                initial={{ opacity: 0, y: 100 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                <Mail />
-              </motion.div>
-            )}
-            {numActive === 2 && stateNewEmployee === "0" && (
-              <motion.div
-                initial={{ opacity: 0, y: 100 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                <Registed />
-              </motion.div>
-            )}
-            {numActive === 2 && stateNewEmployee === "1" && (
-              <motion.div
-                initial={{ opacity: 0, y: 100 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                <Edit />
-              </motion.div>
-            )}
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </>
   );
 }

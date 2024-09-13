@@ -13,9 +13,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <title>HR Gravitech</title>
-      <body className={"max-h-full"}>
+      <body style={{ height: '100%'}}>
         <Provider store={store}>
-          <main className="h-max">{children}</main>
+          <main style={{ height: '100%'}}>{children}</main>
         </Provider>
       </body>
     </html>
