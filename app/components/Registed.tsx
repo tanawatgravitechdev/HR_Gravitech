@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import db from "@/firebase/index";
 import { useDispatch, useSelector } from "react-redux";
 import SweetAlert2 from "react-sweetalert2";
+import sha256 from "@/encode";
 
 export default function Registed() {
   const [jsonData, setJsonData] = useState({});
@@ -27,7 +28,6 @@ export default function Registed() {
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
   useEffect(() => {
-    console.log("aaa");
     db.get(`member`).then((snapshot) => {
       setJsonData(snapshot.val());
     });
@@ -35,18 +35,24 @@ export default function Registed() {
 
   function reset(keyNumber: string) {
     let jsonTemp: any = {};
-    db.get(`member/${keyNumber}`).then((snapshot) => {
+    db.get(`member/${keyNumber}`).then(async (snapshot) => {
       let jsonTmp = snapshot.val();
+      let passTmp = await sha256(
+        jsonTmp.full_name_en.split(" ").length > 1
+          ? (
+              jsonTmp.full_name_en.replaceAll("  ", " ").split(" ")[0] +
+              "_" +
+              jsonTmp.full_name_en
+                .replaceAll("  ", " ")
+                .split(" ")[1]
+                .replaceAll(" ", "")
+                .substring(0, 1)
+            ).toLowerCase()
+          : "password"
+      );
       jsonTemp[keyNumber] = {
         ...jsonTmp,
-        password:
-          jsonTmp.full_name_en.split(" ").length > 1
-            ? (
-                jsonTmp.full_name_en.replaceAll('  ',' ').split(" ")[0] +
-                "_" +
-                jsonTmp.full_name_en.replaceAll('  ',' ').split(" ")[1].replaceAll(' ','').substring(0, 1)
-              ).toLowerCase()
-            : "password",
+        password: passTmp,
       };
       db.write(jsonTemp);
     });
@@ -72,7 +78,7 @@ export default function Registed() {
       <div className="pl-10 pr-10 pt-10 ">
         <div className="grid grid-cols-6 w-full mb-10 gap-5">
           <div className="text-center">
-            <span className="text-xl font-bold">รายชื่อทั้งหมด</span>
+            <span className="text-xl font-bold">🫂 รายชื่อทั้งหมด</span>
           </div>
           <div className="col-span-2">
             <div className="border-2 border-gray-200 p-1 mt-1 rounded-md w-full">
@@ -85,17 +91,17 @@ export default function Registed() {
                 placeholder="Search"
                 className="outline-none text-xs border-0 w-full pl-10"
                 value={search}
-                onChange={(e)=>{
-                  setSearch(e.target.value)
+                onChange={(e) => {
+                  setSearch(e.target.value);
                 }}
               />
             </div>
           </div>
           <div className="">
-            <div className="bg-white shadow-lg text-xs w-2/4 text-center rounded-md cursor-pointer p-3">
+            {/* <div className="bg-white shadow-lg text-xs w-2/4 text-center rounded-md cursor-pointer p-3">
               <FontAwesomeIcon icon={faFilter} className="mr-3" />
               <span>Filter</span>
-            </div>
+            </div> */}
           </div>
           <div className="col-span-1"></div>
           <div
@@ -117,7 +123,9 @@ export default function Registed() {
             </div>
             <div className="col-span-3 text-left pt-3 grid grid-cols-2">
               <span className="text-xs font-bold">ชื่อ-นามสกุล (ภาษาไทย)</span>
-              <span className="text-xs font-bold">ชื่อ-นามสกุล (ภาษาอังกฤษ)</span>
+              <span className="text-xs font-bold">
+                ชื่อ-นามสกุล (ภาษาอังกฤษ)
+              </span>
             </div>
             <div className="col-span-1 text-center pt-3">
               <span className="text-xs font-bold">รหัสเครื่อง</span>
@@ -134,92 +142,97 @@ export default function Registed() {
             <div className="text-center pt-3"></div>
           </div>
           <div className="h-80 overflow-y-scroll">
-          {jsonData && (
-            <>
-              {Object.values(jsonData).map((data: any, index: number) => (
-                <>
-                  {data["status"] != "delete" && ((search !="" &&  (data.full_name_th.includes(search) || data.employee_number.includes(search))) || (search === "")) && (
-                    <>
-                      <div className="bg-white grid grid-cols-9 h-14">
-                        <div className="text-center pt-3">
-                          <span className="text-xs">{index + 1}</span>
-                        </div>
-                        <div className="col-span-3 text-left pt-3 grid grid-cols-2">
-                          <span className="text-xs">
-                            {data.full_name_th}
-                          </span>
-                          <span className="text-xs">
-                            {data.full_name_en}
-                          </span>
-                        </div>
-                        <div className="col-span-1 text-center pt-3">
-                          <span className="text-xs">
-                            {data.id ? data.id : 'ยังไม่ได้ระบุ'}
-                          </span>
-                        </div>
-                        <div className="col-span-1 text-center pt-3">
-                          <span className="text-xs">
-                            {data.employee_number}
-                          </span>
-                        </div>
-                        <div className="text-center pt-3">
-                          <span className="text-xs">{data.department}</span>
-                        </div>
-                        <div className="text-center pt-3">
-                          <span className="text-xs">
-                            {data.status ? data.status : "คงอยู่"}
-                          </span>
-                        </div>
-                        <div className="text-center pt-3 items-end">
-                          <div className="float-right mr-10 mt-2 w-3/6 grid grid-cols-3 gap-0 text-center text-zinc-800">
-                            <FontAwesomeIcon
-                              icon={faRefresh}
-                              className="cursor-pointer active:opacity-5"
-                              onMouseDown={()=>{
-                                setSwalProps({
-                                  show: false,
-                                })
-                              }}
-                              onClick={() => {
-                                setSwalProps({
-                                  show: true,
-                                  title: "แจ้งเตือน",
-                                  icon: "success",
-                                  text: "คืนค่ารหัสผ่านสำเร็จ",
-                                })
-                                reset(data.employee_number);
-                              }}
-                            />
-                            <FontAwesomeIcon
-                              icon={faEdit}
-                              className="cursor-pointer active:opacity-5"
-                              onClick={() => {
-                                dispatch({
-                                  type: "setEditEmployee",
-                                  payload: data.employee_number,
-                                });
-                                dispatch({
-                                  type: "setStateNewEmployee",
-                                  payload: "1",
-                                });
-                              }}
-                            />
-                            <FontAwesomeIcon
-                              icon={faTrash}
-                              className="cursor-pointer"
-                              onClick={() => {
-                                deleteItem(data.employee_number);
-                              }}
-                            />
+            {jsonData && (
+              <>
+                {Object.values(jsonData).map((data: any, index: number) => (
+                  <>
+                    {data["status"] != "delete" &&
+                      ((search != "" &&
+                        (data.full_name_th.includes(search) ||
+                        (data.full_name_en).toLowerCase().includes(search.toLowerCase()) ||
+                          data.employee_number.includes(search))) ||
+                        search === "") && (
+                        <>
+                          <div className="bg-white grid grid-cols-9 h-14">
+                            <div className="text-center pt-3">
+                              <span className="text-xs">{index + 1}</span>
+                            </div>
+                            <div className="col-span-3 text-left pt-3 grid grid-cols-2">
+                              <span className="text-xs">
+                                {data.full_name_th}
+                              </span>
+                              <span className="text-xs">
+                                {data.full_name_en}
+                              </span>
+                            </div>
+                            <div className="col-span-1 text-center pt-3">
+                              <span className="text-xs">
+                                {data.id ? data.id : "ยังไม่ได้ระบุ"}
+                              </span>
+                            </div>
+                            <div className="col-span-1 text-center pt-3">
+                              <span className="text-xs">
+                                {data.employee_number}
+                              </span>
+                            </div>
+                            <div className="text-center pt-3">
+                              <span className="text-xs">{data.department}</span>
+                            </div>
+                            <div className="text-center pt-3">
+                              <span className="text-xs">
+                                {data.status ? data.status : "คงอยู่"}
+                              </span>
+                            </div>
+                            <div className="text-center pt-3 items-end">
+                              <div className="float-right mr-10 mt-2 w-3/6 grid grid-cols-3 gap-0 text-center text-zinc-800">
+                                <FontAwesomeIcon
+                                  icon={faRefresh}
+                                  className="cursor-pointer active:opacity-5"
+                                  onMouseDown={() => {
+                                    setSwalProps({
+                                      show: false,
+                                    });
+                                  }}
+                                  onClick={() => {
+                                    setSwalProps({
+                                      show: true,
+                                      title: "แจ้งเตือน",
+                                      icon: "success",
+                                      text: "คืนค่ารหัสผ่านสำเร็จ",
+                                    });
+                                    reset(data.employee_number);
+                                  }}
+                                />
+                                <FontAwesomeIcon
+                                  icon={faEdit}
+                                  className="cursor-pointer active:opacity-5"
+                                  onClick={() => {
+                                    dispatch({
+                                      type: "setEditEmployee",
+                                      payload: data.employee_number,
+                                    });
+                                    dispatch({
+                                      type: "setStateNewEmployee",
+                                      payload: "1",
+                                    });
+                                  }}
+                                />
+                                <FontAwesomeIcon
+                                  icon={faTrash}
+                                  className="cursor-pointer"
+                                  onClick={() => {
+                                    deleteItem(data.employee_number);
+                                  }}
+                                />
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </>
-              ))}
-            </>
-          )}
+                        </>
+                      )}
+                  </>
+                ))}
+              </>
+            )}
           </div>
         </div>
 

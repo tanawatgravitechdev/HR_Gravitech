@@ -57,11 +57,14 @@ export default function Mail() {
             <FontAwesomeIcon icon={faTrash} className="w-3 mr-3 inline-block" />
             <span>ลบ</span>
           </div> */}
-          <div className="bg-white shadow-md leading-10 rounded text-xs text-center col-span-1 cursor-pointer">
+          {/* <div className="bg-white shadow-md leading-10 rounded text-xs text-center col-span-1 cursor-pointer">
             <FontAwesomeIcon icon={faClock} className="w-3 mr-3 inline-block" />
             <span className="text-xs">ล่าสุด</span>
+          </div> */}
+          <div className=" col-span-6">
+          <span className="text-xl font-bold leading-10">📩 ใบสมัคร</span>
           </div>
-          <div className=" col-span-8">
+          <div className=" col-span-6">
             <div className="relative bg-white overflow-hidden border-2  rounded-md relative border-slate-100	">
               <FontAwesomeIcon
                 icon={faSearch}
@@ -78,15 +81,15 @@ export default function Mail() {
               />
             </div>
           </div>
-          <div className="bg-white shadow-md leading-10 rounded-xs text-md text-gray-500 text-center col-span-1">
+          {/* <div className="bg-white shadow-md leading-10 rounded-xs text-md text-gray-500 text-center col-span-1">
             <FontAwesomeIcon
               icon={faFilter}
               className="w-3 mr-3 inline-block"
             />
             <span className="text-xs">Filter</span>
-          </div>
+          </div> */}
         </div>
-        <div className="text-md grid grid-cols-2 w-20 float-right mb-5">
+        {/* <div className="text-md grid grid-cols-2 w-20 float-right mb-5">
           <FontAwesomeIcon
             icon={faAngleLeft}
             className="text-md w-3 text-gray-400"
@@ -95,7 +98,7 @@ export default function Mail() {
             icon={faAngleRight}
             className="text-md w-3 text-gray-400"
           />
-        </div>
+        </div> */}
 
         <div className="mt-10">
           <div className="w-full bg-gray-200 grid grid-cols-10 p-5 text-xs">
@@ -109,9 +112,9 @@ export default function Mail() {
         <div className="h-96 overflow-scroll shadow-xl">
           {jsonData.map((item: any, index: number) => (
             <>
-              {(search === "" ||
+              {(item["name_th"] && (search === "" ||
                 (item["name_th"] as string).includes(search) ||
-                (item["position"][0] as string).includes(search)) && (
+                (item["position"][0] as string).includes(search))) && (
                 <>
                   <div className="w-full bg-white grid grid-cols-10 p-5 text-xs shadow-xl border-b-2 border-gray-100">
                     <div className="col-span-1">
@@ -132,16 +135,16 @@ export default function Mail() {
                         <a
                           href={`https://register-gravitech-hr.vercel.app/reviewer/${item["key"]}`}
                           target="blank"
-                          className="border-red-400 bg-white border-2 rounded-md text-xs text-center leading-8"
+                          className="border-zinc-400 bg-zinc-400 text-white border-2 rounded-md text-xs text-center leading-8"
                         >
-                          🔸Super resume
+                         📨 Super resume
                         </a>
                         <a
                           href={`https://register-gravitech-hr.vercel.app/reviewer_iso/${item["key"]}`}
                           target="blank"
-                          className="border-green-400 bg-white border-2 rounded-md text-xs text-center leading-8"
+                          className="border-zinc-600 bg-zinc-600 text-white border-2 rounded-md text-xs text-center leading-8"
                         >
-                          🔹Job form
+                          📑 Job form
                         </a>
                       </div>
                     </div>
