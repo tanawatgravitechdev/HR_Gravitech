@@ -18,7 +18,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import SweetAlert2 from "react-sweetalert2";
+import dynamic from 'next/dynamic';
+const SweetAlert2 = dynamic(() => import('react-sweetalert2'), { ssr: false });
 import sha256 from "@/encode";
 export default function Home() {
   const [numActive, setNumAtive] = useState(2);
@@ -76,7 +77,6 @@ export default function Home() {
   }
 
   useEffect(() => {
-    sha256("tanawat_t").then((hash) => console.log(hash));
   }, []);
   return (
     <>
