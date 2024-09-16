@@ -113,7 +113,7 @@ export default function Main() {
                     className="hover:bg-stone-800"
                   >
                     <ListItemComponent
-                      name="ใบคำลา"
+                      name="ใบลา"
                       icon={faFolderOpen}
                       active={numActive === 4}
                     />
